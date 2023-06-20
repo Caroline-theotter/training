@@ -7,6 +7,8 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 type Movie struct {
@@ -73,12 +75,12 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 			movies = append(movies, movie)
 			json.NewEncoder(w).Encode(movie)
 			return
-		} 
+		}
 	}
 }
 
 func main() {
-	r := mux.newRouter()
+	r := mux.NewRouter()
 
 	movies = append(movies, Movie{ID: "1", Isbn: "438227", Title: "Movie One", Director: &Director{FirstName: "Lisa", LastName: "Foo"}})
 	movies = append(movies, Movie{ID: "2", Isbn: "438229", Title: "Movie Two", Director: &Director{FirstName: "Julie", LastName: "Voo"}})
@@ -89,7 +91,7 @@ func main() {
 	r.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
 	r.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
 
-	fmt.Println("Starting server at port 8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	fmt.Println("Starting server at port 8000")
+	log.Fatal(http.ListenAndServe(":8000", r))
 
 }
